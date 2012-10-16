@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="jquery.js"></script>
+	<script src="underscore-min.js"></script>
+	<script src="backbone-min.js"></script>
+	<script src="models/coursemodel.js"></script>
+	<script src="views/courseview.js"></script>
+	<script>
+		var courseCollection;
+		var courseListView;
+		$().ready(function(){
+			courseCollection = new CourseCollection();
+			var addCourseView = new AddCourseView();
+			courseListView = new CourseListView({dd:courseCollection});
+			courseCollection.fetch({
+				success : function(src,response){
+					src.reset();
+					if(response){
+						src.add(response.course);
+						courseListView.displayCourses();
+					}
+						
+				}
+			});
+			
+		});
+	</script>
+</head>
+<body>
+	<h1>Courses</h1>
+	<div id="addCourseDiv">
+		Name <input type="text" id="courseNameText">
+		Description <input type="text" id="courseDescriptionText"><br/>
+		<input type="button" value="Add" id="addBtn"><br/>
+	</div>
+	<hr/>
+	<ul id="coursesUL"></ul>
+</body>
+</html>
